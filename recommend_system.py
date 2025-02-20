@@ -1,6 +1,9 @@
 import streamlit as st
+st.set_page_config(page_title="Chẩn Đoán Khối U & Gợi Ý Bệnh Viện", layout="wide")
+
 from fastai.vision.all import PILImage
 import time
+import torch
 
 # ===== TẢI MÔ HÌNH CHỈ MỘT LẦN =====
 @st.cache_resource
@@ -22,7 +25,6 @@ tumor_descriptions = {
 }
 
 # ===== CÀI ĐẶT TRANG =====
-st.set_page_config(page_title="Chẩn Đoán Khối U & Gợi Ý Bệnh Viện", layout="wide")
 st.title("Hệ Thống Chẩn Đoán Khối U & Gợi Ý Bệnh Viện")
 st.write("Giao diện chat mô phỏng. Vui lòng upload ảnh MRI từ **sidebar** để hệ thống tự động chẩn đoán và gợi ý bệnh viện.")
 
@@ -71,6 +73,9 @@ if not st.session_state.get("clear_flag", False):
             pred_prob = preds[0]
             pred_idx = pred_prob.argmax()
             pred_str = tumor_learner.dls.vocab[pred_idx]
+            # probability = pred_prob[pred_idx].item()
+
+            pred_prob = torch.softmax(pred_prob, dim=0)
             probability = pred_prob[pred_idx].item()
 
             # Tạo nội dung trả lời cho assistant
@@ -107,7 +112,7 @@ else:
 for idx, msg in enumerate(st.session_state.messages):
     with st.chat_message(msg["role"]):
         if msg["role"] == "user" and "image" in msg:
-            st.image(msg["image"], width=300, height=400)
+            st.image(msg["image"], width=300)
         # Hiệu ứng typewriter cho tin nhắn assistant cuối cùng
         if (msg["role"] == "assistant" and idx == len(st.session_state.messages) - 1 
             and st.session_state.animate_last):
