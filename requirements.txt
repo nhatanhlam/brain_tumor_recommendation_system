@@ -1,0 +1,13 @@
+fastai
+timm
+torch
+torchvision
+tensorflow
+pandas
+numpy
+scikit-learn
+matplotlib
+streamlit
+transformers
+Pillow
+tensorboard
