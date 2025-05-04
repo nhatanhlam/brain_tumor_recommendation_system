@@ -1,0 +1,62 @@
+hospital_id,hospital_name,hospital_address,hospital_tel,hospital_web
+1,BV Hùng Vương,"179 đường Sư Vạn Hạnh, Phường 5, Quận 5",028 3924 2490,https://www.bvhungvuong.vn/
+2,BV Nhân Dân 115,"527 Sư Vạn Hạnh, Phường 12, Quận 10",028 3864 2533,https://benhvien115.com.vn/
+3,BV Nhi đồng 1,"341 Sư Vạn Hạnh, Phường 10, Quận 10",028 3927 1111,https://nhidong.org.vn/
+4,BV Nhân Dân Gia Định,"1 Nơ Trang Long, Phường 7, Quận Bình Thạnh",028 3512 5555,https://bvndgiadinh.org.vn/
+5,BV Bình Dân,"371 Điện Biên Phủ, Phường 4, Quận 3",028 6682 2222,https://bvbinhdan.com.vn/
+6,BV đa khoa Tâm Anh TPHCM,"2B đường Phổ Quang, Phường 2, Quận Tân Bình",028 7102 6789,https://tamanhhospital.vn/chuyen-khoa/trung-tam-tiem-chung/
+7,BV đa khoa Hoàn Mỹ Sài Gòn,"60A Phan Xích Long, Phường 1, Quận Phú Nhuận",028 3990 9999,https://hoanmy.com/en/
+8,BV Nhi đồng Thành phố,"15 Mai Xuân Thưởng, Phường 4, Quận 6",028 2253 6699,https://bvndtp.org.vn/
+9,BV đa khoa Vinmec Central Park,"208 Nguyễn Hữu Cảnh, Phường 22, Quận Bình Thạnh",028 3979 7999,https://www.vinmec.com/eng/hospital/benh-vien-da-khoa-quoc-te-vinmec-central-park-10890-en-hoi-suc-cap-cuu
+10,BV Ung Bướu,"Cơ sở 1: 3 Nơ Trang Long, Phường 7, Quận Bình Thạnh",028 3841 2635,https://benhvienungbuou.vn/
+11,BV Quốc tế Mỹ,"220 Nguyễn Lương Bằng, Phường Tân Phú, Quận 7",028 5413 5555,https://www.hopkinsmedicine.org/international/health-care-consulting/asia-pacific/aih
+12,BV Nhi đồng 2,"14 Ngô Quyền, Phường 6, Quận 1",028 3829 5726,http://www.benhviennhi.org.vn/
+13,BV Quốc tế City,"3 đường Số 17A, Phường An Phú, TP. Thủ Đức",028 6780 8888,https://www.facebook.com/BenhVienQuocTeCity/?locale=vi_VN
+14,BV Gia An 115,"Khu B, đường Nguyễn Văn Linh, Xã Bình Hưng, Huyện Bình Chánh",028 6288 1115,https://giaan115.com/
+15,BV Thành phố Thủ Đức,"260 đường Lê Văn Việt, Phường Tăng Nhơn Phú A, TP. Thủ Đức",028 3896 2222,https://benhvienthuduc.vn/
+16,BV Xuyên Á,"42A Quốc lộ 22, Xã Tân Phú Trung, Huyện Củ Chi",028 3796 5555,https://bvxuyena.com.vn/
+17,BV đa khoa Mỹ Đức,"4 Nguyễn Thiện Thành, Phường 1, Quận 3",028 3930 2299,https://myduchospital.vn/
+18,BV Lê Văn Thịnh,"130 Quốc lộ 13, Phường Hiệp Bình Phước, TP. Thủ Đức",028 3727 3555,https://benhvienlevanthinh.vn/
+19,BV Quận 11,"103A đường Hàn Hải Long, Phường 11, Quận 11",028 3963 8114,https://benhvienquan11.vn/
+20,BV Nguyễn Trãi,"314 Nguyễn Trãi, Phường 8, Quận 5",028 3923 2051,http://bvnguyentrai.org.vn/
+21,BV FV,"8A/9C2 Thái Văn Lung, Phường Bến Nghé, Quận 1",028 5411 3333,https://www.fvhospital.com/
+22,BV Quận Bình Thạnh,"126 Xô Viết Nghệ Tĩnh, Phường 26, Quận Bình Thạnh",028 3511 8094,http://bvbinhthanh.medinet.gov.vn/
+23,BV đa khoa An Sinh,"10 Trần Huy Liệu, Phường 11, Quận Phú Nhuận",028 3844 2050,http://ansinh.com.vn/
+24,BV Mỹ Đức Phú Nhuận,"8 Nguyễn Gia Trí, Phường 2, Quận Phú Nhuận",028 3517 9922,https://myduchospital.vn/
+25,BV ĐKQT Hoàn Mỹ Thủ Đức,"409 Lê Trọng Tấn, Phường Sơn Kỳ, Quận Tân Phú",028 7300 6555,https://hoanmy.com/thuduc/
+26,BV Trưng Vương,"266 Lý Thường Kiệt, Phường 14, Quận 10",028 3865 2111,https://www.bvtrungvuong.vn/
+27,BV Nguyễn Tri Phương,"468 Nguyễn Trãi, Phường 8, Quận 5",028 3923 4320,https://bvnguyentriphuong.com.vn/
+28,BV đa khoa Vạn Hạnh,"700 Sư Vạn Hạnh (nối dài), Phường 12, Quận 10",028 3863 2553,https://benhvienvanhanh.vn/
+29,BV Quận Tân Phú,"60 Nguyễn Súy, Phường Tân Quý, Quận Tân Phú",028 3812 4777,http://benhvienquan10.medinet.gov.vn/
+30,BV SAIGON-ITO Phú Nhuận,"140 Nguyễn Trọng Tuyển, Phường 8, Quận Phú Nhuận",028 3997 9977,https://www.saigonito.com/
+31,BV đa khoa khu vực Củ Chi,"Đường Nguyễn Văn Hoài, Ấp Bến Đình, Xã Tân Phú Trung, Huyện Củ Chi",028 3796 0075,https://bvdkkvcuchi.vn/
+32,BV đa khoa khu vực Thủ Đức,"127 Đặng Văn Bi, Phường Trường Thọ, TP. Thủ Đức",028 3897 2929,https://benhvienkhuvucthuduc.vn/
+33,BV Nhân Ái,"199 Nguyễn Hữu Thọ, Phước Kiển, Nhà Bè",028.37818.179,https://bvnhanai.vn/
+34,BV Phạm Ngọc Thạch,"120 Trần Phú, Phường 4, Quận 5",028 3855 2447,https://bvpnt.org.vn/
+35,BV đa khoa Hồng Đức III,"219 Phạm Văn Chiêu, Phường 9, Quận Gò Vấp",028 6295 8115,https://hongduchospital.vn/
+36,BV An Bình,"146 đường An Bình, Phường 7, Quận 5",028 3923 5031,https://benhvienanbinh.vn/
+37,BV Triều An,"425 Kinh Dương Vương, Phường An Lạc, Quận Bình Tân",028 3875 5171,https://trieuanhospital.vn/
+38,BV Quận 7,"101 đường Nguyễn Văn Linh, Phường Tân Thuận Đông, Quận 7",028 3771 8332,https://benhvienquan7.vn/
+39,BV Huyện Bình Chánh,"100 Nguyễn Thị Tú, Xã Vĩnh Lộc A, Huyện Bình Chánh",028 3765 0379,https://benhvienbinhchanh.vn/
+40,BV đa khoa Quốc tế Nam Sài Gòn,"37 Nguyễn Văn Linh, Xã Bình Hưng, Huyện Bình Chánh",028 5411 9999,https://www.facebook.com/BenhViendaKhoaQuocTeNamSaiGon/
+41,BV đa khoa Tân Hưng,"87 đường Tân Hưng, Phường 3, Quận Tân Bình",028 3845 7475,https://benhvientanhung.com.vn/
+42,BV Huyện Củ Chi,"Đường Sông Hậu, Ấp Trung, Xã Tân An Hội, Huyện Củ Chi",028 3796 0056,http://bvcuci.vn/
+43,BV Quận 12,"59C đường Nguyễn Ảnh Thủ, Phường Hiệp Thành, Quận 12",028 3715 5757,https://benhvienquan12.vn/
+44,BV Quận 1,"1A đường Tôn Đức Thắng, Phường Bến Nghé, Quận 1",028 3829 5754,https://benhvienquan1.vn/
+45,BV Quận 4,"63 đường Ngô Văn Sở, Phường 4, Quận 4",028 3940 6296,https://benhvienquan4.vn/
+46,BV Quận 8,"472 đường Dương Bá Trạc, Phường 2, Quận 8",028 3850 6353,https://benhvienquan8.vn/
+47,BV đa khoa khu vực Hóc Môn,"4/1A đường Quang Trung, Thị trấn Hóc Môn, Huyện Hóc Môn",028 3891 4351,https://bvdkhocmon.vn/
+48,BV đa khoa Sài Gòn,"125 đường Lê Thánh Tôn, Phường Bến Nghé, Quận 1",028 3829 2591,https://benhviensaigon.com.vn/
+49,BV Quận Gò Vấp,"217 đường Lê Đức Thọ, Phường 15, Quận Gò Vấp",028 3894 1357,https://benhvienquan17.medinet.gov.vn/
+50,BV Quận Nhà Bè,"888 đường Lê Văn Lương, Xã Phước Kiển, Huyện Nhà Bè",028 3781 8332,https://benhviennhabe.vn/
+51,BV Quận Bình Tân,"100 đường Hồ Ngọc Lãm, Phường An Lạc, Quận Bình Tân",028 3875 5693,https://benhvienbinhtan.vn/
+52,BV Lê Văn Việt,"98A đường Lê Văn Việt, Phường Tăng Nhơn Phú A, TP. Thủ Đức",028 3730 6777,https://benhvienlevanviet.vn/
+53,BV đa khoa Quốc tế Minh Anh,"10 đường Nguyễn Minh Hoàng, Phường 12, Quận Tân Bình",028 6288 8288,https://www.minhanhhos.com.vn/
+54,BV Quận Phú Nhuận,"200A đường Phan Xích Long, Phường 2, Quận Phú Nhuận",028 3844 4734,https://benhvienphunhuan.vn/
+55,BV Quận Tân Bình,"382 Nguyễn Trọng Tuyển, P.2, Tân Bình",028.3991.4246,https://benhvientanbinh.vn/
+56,BV Đức Khang,"500 Trần Hưng Đạo, P.2, Q.5",028.6288.5588,https://benhvienduckhang.com/
+57,BV đa khoa Quốc Ánh,"280 Nguyễn Tri Phương, P.4, Q.10",028.3924.4499,https://www.bvienquocanh.com.vn/
+58,BV Thân Dân,"728 Nguyễn Trãi, P.11, Q.5",028.3855.8456,Chưa có thông tin
+59,BV đa khoa Hồng Đức II,"8 Nguyễn Tri Phương, P.6, Q.5",028.3855.9061,https://hongduchospital.vn/
+60,BV Quận 6,"200 Nguyễn Văn Linh, Q.6",028.3875.5485,https://benhvienquan6.vn/
+61,BV đa khoa Tâm Trí Sài Gòn,"171 Trường Chinh, P. Tân Sơn Nhì, Q. Tân Phú",028.6293.4555,https://tmt.vn/
