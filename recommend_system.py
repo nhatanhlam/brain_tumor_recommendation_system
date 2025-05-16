@@ -1,129 +1,156 @@
 import streamlit as st
-st.set_page_config(page_title="Chẩn Đoán Khối U & Gợi Ý Bệnh Viện", layout="wide")
-
 from fastai.vision.all import PILImage
 import time
 import torch
+import re
 
-# ===== TẢI MÔ HÌNH CHỈ MỘT LẦN =====
+st.set_page_config(page_title="Brain Tumor Diagnosis & Hospital Recommendation System", layout="wide")
+
+# ===== TẢI MODEL CHẨN ĐOÁN =====
 @st.cache_resource
 def get_tumor_model():
-    from brain_tumor.predict import load_model  # Giả sử load_model nằm trong module brain_tumor.predict
+    from brain_tumor.predict import load_model
     return load_model()
-
 tumor_learner = get_tumor_model()
 
 # ===== IMPORT HÀM GỢI Ý BỆNH VIỆN =====
 from hospital_recommendation.predict_hospital import recommend_hospitals
 
-# ===== DICTIONARY MÔ TẢ CHO TỪNG LOẠI KHỐI U =====
+# ===== MÔ TẢ NHÃN =====
 tumor_descriptions = {
-    "glioma_tumor": "Glioma là loại u xuất hiện ở não và tủy sống, thường có tính ác tính cao.",
-    "meningioma_tumor": "Meningioma là loại u phát sinh từ lớp màng bao quanh não, thường lành tính.",
-    "no_tumor": "Không phát hiện u.",
-    "pituitary_tumor": "Pituitary tumor là loại u xuất hiện ở tuyến yên, có thể ảnh hưởng đến hệ nội tiết."
+    "glioma_tumor":     "Glioma is a type of tumor that occurs in the brain and spinal cord and is often highly malignant.",
+    "meningioma_tumor": "Meningiomas are tumors that arise from the membranes surrounding the brain and are usually benign.",
+    "no_tumor":         "No tumor detected.",
+    "pituitary_tumor":  "Pituitary tumor is a type of tumor that occurs in the pituitary gland and can affect the endocrine system."
 }
 
-# ===== CÀI ĐẶT TRANG =====
-st.title("Hệ Thống Chẩn Đoán Khối U & Gợi Ý Bệnh Viện")
-st.write("Giao diện chat mô phỏng. Vui lòng upload ảnh MRI từ **sidebar** để hệ thống tự động chẩn đoán và gợi ý bệnh viện.")
+st.title("BRAIN TUMOR DIAGNOSIS & HOSPITAL RECOMMENDATION SYSTEM")
+st.write("Please upload MRI images from **sidebar** to automatically diagnose and recommend hospitals.")
 
-# ===== KHỞI TẠO BIẾN SESSION STATE =====
-if "messages" not in st.session_state:
-    st.session_state.messages = []
-if "last_file" not in st.session_state:
-    st.session_state.last_file = None
-if "animate_last" not in st.session_state:
-    st.session_state.animate_last = False
-if "uploader_key" not in st.session_state:
-    st.session_state.uploader_key = 0
-if "clear_flag" not in st.session_state:
-    st.session_state.clear_flag = False
+# ===== KHỞI TẠO SESSION STATE =====
+if "messages"      not in st.session_state: st.session_state.messages = []
+if "last_file"     not in st.session_state: st.session_state.last_file = None
+if "uploader_key"  not in st.session_state: st.session_state.uploader_key = 0
+if "clear_flag"    not in st.session_state: st.session_state.clear_flag = False
+if "animate_last"  not in st.session_state: st.session_state.animate_last = False
+if "sel"           not in st.session_state: st.session_state.sel = []     # lưu lựa chọn dropdown quận
 
-# ===== FILE UPLOADER VÀ NÚT CLEAR CHAT Ở SIDEBAR =====
+# ===== SIDEBAR: UPLOAD + CLEAR =====
 uploaded_file = st.sidebar.file_uploader(
-    "Upload ảnh MRI (PNG/JPG/JPEG)", 
-    type=["png", "jpg", "jpeg"],
+    "Upload MRI images (PNG/JPG/JPEG)",
+    type=["png","jpg","jpeg"],
     key=f"uploader_{st.session_state.uploader_key}"
 )
 if st.sidebar.button("Clear Chat History"):
-    st.session_state.messages = []
+    st.session_state.messages.clear()
     st.session_state.last_file = None
-    st.session_state.uploader_key += 1  # Tăng key để reset file uploader
+    st.session_state.uploader_key += 1
     st.session_state.clear_flag = True
-    # Nếu có experimental_rerun thì gọi, còn không thì flag sẽ ngăn xử lý file
-    if hasattr(st, "experimental_rerun"):
-        st.experimental_rerun()
 
-# ===== XỬ LÝ ẢNH UPLOAD VÀ DỰ ĐOÁN =====
-# Nếu clear_flag đang được đặt, ta không xử lý file uploader (và reset flag)
-if not st.session_state.get("clear_flag", False):
-    if uploaded_file is not None:
-        if st.session_state.last_file != uploaded_file:
-            st.session_state.last_file = uploaded_file
+# ===== 1. UPLOAD & CHẨN ĐOÁN =====
+if not st.session_state.clear_flag and uploaded_file is not None:
+    if uploaded_file != st.session_state.last_file:
+        # Cập nhật ảnh mới và reset dropdown
+        st.session_state.last_file = uploaded_file
+        st.session_state.sel = []
 
-            # Xử lý ảnh: đảm bảo ảnh ở định dạng phù hợp với mô hình
-            fastai_img = PILImage.create(uploaded_file)
-            if fastai_img.mode != "RGB":
-                fastai_img = fastai_img.convert("RGB")
+        img = PILImage.create(uploaded_file)
+        if img.mode != "RGB":
+            img = img.convert("RGB")
 
-            # Tạo test dataloader và lấy dự đoán qua fastai
-            dl = tumor_learner.dls.test_dl([fastai_img])
-            preds, _ = tumor_learner.get_preds(dl=dl)
-            pred_prob = preds[0]
-            pred_idx = pred_prob.argmax()
-            pred_str = tumor_learner.dls.vocab[pred_idx]
-            # probability = pred_prob[pred_idx].item()
+        # Thêm tin nhắn user
+        st.session_state.messages.append({
+            "role": "user",
+            "content": "I uploaded an MRI image. Please diagnose and recommend hospitals!",
+            "image": img
+        })
 
-            pred_prob = torch.softmax(pred_prob, dim=0)
-            probability = pred_prob[pred_idx].item()
+        # Chạy inference
+        dl = tumor_learner.dls.test_dl([img])
+        preds, _ = tumor_learner.get_preds(dl=dl)
+        probs = torch.softmax(preds[0], dim=0)
+        idx = probs.argmax()
+        lbl = tumor_learner.dls.vocab[idx]
+        acc = probs[idx].item()
 
-            # Tạo nội dung trả lời cho assistant
-            assistant_text = (
-                f"**Loại khối u:** {pred_str}\n\n"
-                f"**Độ chính xác:** {probability:.4f}\n\n"
-                f"**Mô tả:** {tumor_descriptions.get(pred_str, 'Không có mô tả cho loại khối u này.')}"
-            )
+        assistant_text = (
+            f"**Tumor type:** {lbl}\n\n"
+            f"**Accuracy:** {acc:.4f}\n\n"
+            f"**Description:** {tumor_descriptions[lbl]}"
+        )
 
-            # Gợi ý bệnh viện
-            rec_df = recommend_hospitals(pred_str)
-            if pred_str == "no_tumor":
-                assistant_text += "\n\nNếu bạn muốn khám tổng quát, đây là một số bệnh viện tham khảo:"
-            else:
-                assistant_text += "\n\n**Gợi Ý Bệnh Viện:**"
+        # Lấy gợi ý gốc
+        df0 = recommend_hospitals(lbl)
 
-            # Thêm tin nhắn vào lịch sử chat
-            st.session_state.messages.append({
-                "role": "user",
-                "content": "Tôi vừa upload ảnh MRI. Nhờ bạn chẩn đoán!",
-                "image": fastai_img
-            })
-            st.session_state.messages.append({
-                "role": "assistant",
-                "content": assistant_text,
-                "hospital_df": rec_df
-            })
-            st.session_state.animate_last = True  # Đánh dấu hiệu ứng typewriter cần chạy
+        # Thêm tin nhắn assistant, lưu hospital_df & filtered_df=None
+        st.session_state.messages.append({
+            "role": "assistant",
+            "content": assistant_text,
+            "hospital_df": df0,
+            "filtered_df": None
+        })
+        st.session_state.animate_last = True
 else:
-    # Nếu clear_flag đang được đặt, reset flag để không chặn xử lý lần sau
     st.session_state.clear_flag = False
 
-# ===== HIỂN THỊ LỊCH SỬ CHAT =====
-for idx, msg in enumerate(st.session_state.messages):
+# ===== 2. HIỂN THỊ LỊCH SỬ CHAT =====
+last_idx = len(st.session_state.messages) - 1
+for i, msg in enumerate(st.session_state.messages):
     with st.chat_message(msg["role"]):
-        if msg["role"] == "user" and "image" in msg:
+        if msg["role"] == "user":
             st.image(msg["image"], width=300)
-        # Hiệu ứng typewriter cho tin nhắn assistant cuối cùng
-        if (msg["role"] == "assistant" and idx == len(st.session_state.messages) - 1 
-            and st.session_state.animate_last):
-            placeholder = st.empty()
-            text_so_far = ""
-            for char in msg["content"]:
-                text_so_far += char
-                placeholder.markdown(text_so_far)
-                time.sleep(0.02)
-            st.session_state.animate_last = False
-        else:
             st.markdown(msg["content"])
-        if msg["role"] == "assistant" and "hospital_df" in msg and msg["hospital_df"] is not None:
-            st.table(msg["hospital_df"])
+        else:
+            if i == last_idx and st.session_state.animate_last:
+                placeholder = st.empty()
+                buffer = ""
+                for c in msg["content"]:
+                    buffer += c
+                    placeholder.markdown(buffer)
+                    time.sleep(0.02)
+                st.session_state.animate_last = False
+            else:
+                st.markdown(msg["content"])
+
+        # In bảng của các message cũ đã lọc (i != last_idx)
+        if (
+            msg["role"] == "assistant" and
+            msg.get("filtered_df") is not None and
+            i != last_idx
+        ):
+            st.table(msg["filtered_df"])
+
+# ===== 3. MULTISELECT + FILTER BUTTON cho message hiện tại =====
+if (
+    st.session_state.messages and
+    st.session_state.messages[-1]["role"] == "assistant"
+):
+    districts = [
+        "Quận 1","Quận 3","Quận 4","Quận 5","Quận 6","Quận 7",
+        "Quận 8","Quận 10","Quận 11","Quận 12","Quận Bình Thạnh",
+        "Quận Bình Tân","Quận Gò Vấp","Quận Phú Nhuận","Quận Tân Bình",
+        "Quận Tân Phú","Huyện Bình Chánh","Huyện Củ Chi","Huyện Hóc Môn",
+        "Huyện Nhà Bè","Thành phố Thủ Đức"
+    ]
+    sel = st.multiselect(
+        "Select district(s) to filter hospitals:",
+        districts,
+        default=st.session_state.sel,
+        key="sel"
+    )
+    if st.button("Submit", key="filter_btn"):
+        last = st.session_state.messages[-1]
+        base = last["hospital_df"]
+        if base is not None and sel:
+            patterns = [fr"\b{re.escape(d)}\b" for d in sel]
+            pat = "|".join(patterns)
+            mask = base["hospital_address"].str.contains(pat, regex=True)
+            filtered = base[mask]
+        else:
+            filtered = base
+
+        # Cập nhật message cuối
+        last["filtered_df"] = filtered
+
+        # In ngay bảng filter
+        st.table(filtered)
